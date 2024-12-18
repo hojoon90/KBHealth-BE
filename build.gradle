@@ -1,0 +1,72 @@
+plugins {
+	id 'java'
+	id 'java-library'
+	id 'org.springframework.boot' version '3.4.0'
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+allprojects {
+	group = 'com.health'
+	version = '0.0.1-SNAPSHOT'
+
+	repositories {
+		mavenCentral()
+	}
+}
+
+subprojects {
+	apply plugin: 'java-library'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter'
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testImplementation 'org.springframework.security:spring-security-test'
+		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	}
+
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(17)
+		}
+	}
+
+	tasks.named('test') {
+		useJUnitPlatform()
+		jvmArgs '-Xshare:off'
+	}
+
+}
+
+project('kbh-web'){
+	dependencies {
+		implementation project(':kbh-security')
+		implementation project(':kbh-core')
+	}
+}
+
+project(':kbh-core') {
+	dependencies {
+		implementation project(':kbh-common')
+	}
+	bootJar.enabled = false
+	jar.enabled = true
+}
+
+project(':kbh-security') {
+	dependencies {
+		implementation project(':kbh-common')
+	}
+	bootJar.enabled = false
+	jar.enabled = true
+}
+
+project(':kbh-common') {
+	bootJar.enabled = false
+	jar.enabled = true
+}
+
+bootJar.enabled = false
