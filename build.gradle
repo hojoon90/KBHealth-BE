@@ -6,7 +6,7 @@ plugins {
 }
 
 allprojects {
-	group = 'com.health'
+	group = 'com.healthcare'
 	version = '0.0.1-SNAPSHOT'
 
 	repositories {
@@ -20,7 +20,9 @@ subprojects {
 	apply plugin: 'io.spring.dependency-management'
 
 	dependencies {
+		implementation 'com.h2database:h2'
 		implementation 'org.springframework.boot:spring-boot-starter'
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 		compileOnly 'org.projectlombok:lombok'
 		annotationProcessor 'org.projectlombok:lombok'
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -41,30 +43,31 @@ subprojects {
 
 }
 
-project('kbh-web'){
+project('kbhc-web'){
 	dependencies {
-		implementation project(':kbh-security')
-		implementation project(':kbh-core')
+		implementation project(':kbhc-common')
+		implementation project(':kbhc-security')
+		implementation project(':kbhc-core')
 	}
 }
 
-project(':kbh-core') {
+project(':kbhc-core') {
 	dependencies {
-		implementation project(':kbh-common')
-	}
-	bootJar.enabled = false
-	jar.enabled = true
-}
-
-project(':kbh-security') {
-	dependencies {
-		implementation project(':kbh-common')
+		implementation project(':kbhc-common')
 	}
 	bootJar.enabled = false
 	jar.enabled = true
 }
 
-project(':kbh-common') {
+project(':kbhc-security') {
+	dependencies {
+		implementation project(':kbhc-common')
+	}
+	bootJar.enabled = false
+	jar.enabled = true
+}
+
+project(':kbhc-common') {
 	bootJar.enabled = false
 	jar.enabled = true
 }

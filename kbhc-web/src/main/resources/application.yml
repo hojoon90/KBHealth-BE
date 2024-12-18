@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: kbhc-backend
+  main:
+    allow-bean-definition-overriding: true
+  config:
+    import:
+      - application.yml
+      - core-config.yml
+      - security-config.yml
+
+springdoc:
+  api-docs:
+    path: /kbhc/docs
+  swagger-ui:
+    path: /kbhc/swagger.html
+    tags-sorter: alpha
+    operations-sorter: alpha

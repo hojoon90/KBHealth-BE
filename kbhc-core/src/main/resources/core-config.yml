@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:kbhc
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  jpa:
+    defer-datasource-initialization: true
+    database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+        # create: 애플리케이션 실행 시 테이블을 모두 제거하고 다시 생성합니다. (drop & create)
+        # create-drop: 애플리케이션 실행 시 테이블을 모두 제거하고 다시 생성합니다. 그리고 애플리케이션 종료 시점에 테이블을 모두 제거합니다. (drop & create & drop)
+        # update: 애플리케이션 실행 시 변경점만 반영됩니다.
+      # validate: 현재 테이블 정보가 entity에 정의된 내용과 동일한지 체크합니다. 다를 경우 경고를 출력하며 애플리케이션을 실행시키지 않습니다.
+      # none: 자동생성을 사용하지 않습니다.
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+        show_sql: true  # sql 쿼리를 보여줍니다.
+        format_sql: true  # sql query formatting
+        use_sql_comments: true  # sql 쿼리의 추가정보를 보여줍니다.
+        dialect: org.hibernate.dialect.H2Dialect

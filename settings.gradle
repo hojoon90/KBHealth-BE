@@ -1,6 +1,6 @@
-rootProject.name = 'kbhealth-backend'
-include 'kbh-web'
-include 'kbh-security'
-include 'kbh-core'
-include 'kbh-common'
+rootProject.name = 'kbhc-backend'
+include 'kbhc-web'
+include 'kbhc-security'
+include 'kbhc-core'
+include 'kbhc-common'
 

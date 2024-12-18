@@ -1,0 +1,5 @@
+secret:
+  key:
+    jwt: "181f806f8423ad3379c50d64244c311657558ac6052fcd1acc924a5bfef78135"
+    salt: "75c8c9642d0fe161"
+    enc-passwrd: "kbh123!@#"
