@@ -83,9 +83,7 @@ public class KbhcSecurityConfig {
 //                                                AntPathRequestMatcher.antMatcher("/kbhc/**"),
                                                 AntPathRequestMatcher.antMatcher("/h2-console/**"),
 
-                                                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/kbhc/signup"),
-                                                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/kbhc/login"),
-                                                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/kbhc/refresh-token")
+                                                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/kbhc/user/**")
 
                                         ).permitAll()
                                         .anyRequest()

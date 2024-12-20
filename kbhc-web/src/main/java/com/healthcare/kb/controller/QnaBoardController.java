@@ -7,8 +7,6 @@ import com.healthcare.kb.dto.response.QnaBoardResponse;
 import com.healthcare.kb.facade.QnaBoardFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,10 +26,10 @@ public class QnaBoardController {
     public ResponseEntity<AppResponse<Void>> registQnaPost(
             @RequestPart @Valid final QnaBoardRequest.Regist request,
             @AuthenticationPrincipal AppUserDetails userDetails,
-            @RequestPart("file") final List<MultipartFile> fileList
+            @RequestPart(name = "file", required = false) final List<MultipartFile> fileList
     ){
         return ResponseEntity.status(HttpStatus.CREATED.value())
-                .body(qnaBoardFacade.registQnaPost(request, userDetails.getUserNo(), fileList));
+                .body(qnaBoardFacade.registQnaPost(request, userDetails, fileList));
 
     }
 
@@ -42,7 +40,7 @@ public class QnaBoardController {
             @AuthenticationPrincipal AppUserDetails userDetails
     ) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(qnaBoardFacade.updateQnaPost());
+                .body(qnaBoardFacade.updateQnaPost(qnaNo, request, userDetails));
     }
 
     @DeleteMapping("/{qnaNo}")
@@ -51,16 +49,25 @@ public class QnaBoardController {
             @AuthenticationPrincipal AppUserDetails userDetails
     ){
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .body(qnaBoardFacade.deleteQnaPost());
+                .body(qnaBoardFacade.deleteQnaPost(qnaNo, userDetails));
     }
 
-    @DeleteMapping("/{qnaNo}")
+    @GetMapping("/{qnaNo}")
     public ResponseEntity<AppResponse<QnaBoardResponse.QnaDetail>> selectQnaPost(
             @PathVariable Long qnaNo,
             @AuthenticationPrincipal AppUserDetails userDetails
     ){
         return ResponseEntity.status(HttpStatus.OK)
-                .body(qnaBoardFacade.selectQnaPost());
+                .body(qnaBoardFacade.selectQnaPost(qnaNo));
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<AppResponse<QnaBoardResponse.QnaBoardPages>> selectQnaPostList(
+            @Valid final QnaBoardRequest.PageablePostSearchRequest request,
+            @AuthenticationPrincipal AppUserDetails userDetails
+    ){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(qnaBoardFacade.selectQnaPostList(request));
     }
 
 

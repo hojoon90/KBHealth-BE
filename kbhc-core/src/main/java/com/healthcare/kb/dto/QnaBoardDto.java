@@ -33,6 +33,26 @@ public class QnaBoardDto {
 
     @Getter
     @Builder
+    public static class QnaSummary{
+        private Long qnaNo;
+        private String title;
+        private Long viewCnt;
+        private String createdBy;
+        private LocalDateTime createdAt;
+
+        public static QnaSummary from(QnaBoard entity) {
+            return QnaSummary.builder()
+                    .qnaNo(entity.getQnaNo())
+                    .title(entity.getTitle())
+                    .viewCnt(entity.getViewCnt())
+                    .createdBy(entity.getCreatedBy().getNickName())
+                    .createdAt(entity.getCreatedAt())
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder
     public static class QnaDetail{
         private Long qnaNo;
         private String title;
@@ -52,5 +72,11 @@ public class QnaBoardDto {
                     .createdBy(entity.getCreatedBy().getNickName())
                     .build();
         }
+    }
+
+    @Getter
+    @Builder
+    public static class SearchCreteria{
+        private String title;
     }
 }
