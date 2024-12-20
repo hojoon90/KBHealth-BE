@@ -1,6 +1,6 @@
 package com.healthcare.kb.repository.board.qna;
 
-import com.healthcare.kb.domain.QnaBoard;
+import com.healthcare.kb.domain.board.QnaBoard;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

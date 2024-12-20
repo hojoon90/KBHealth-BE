@@ -1,7 +1,7 @@
 package com.healthcare.kb.repository.board.qna;
 
-import com.healthcare.kb.domain.QnaBoard;
-import com.healthcare.kb.dto.QnaBoardDto;
+import com.healthcare.kb.domain.board.QnaBoard;
+import com.healthcare.kb.dto.BoardDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-import static com.healthcare.kb.domain.QQnaBoard.qnaBoard;
+import static com.healthcare.kb.domain.board.QQnaBoard.qnaBoard;
 
 @Repository
 public class QnaSearchRepositoryImpl extends QuerydslRepositorySupport
@@ -30,7 +30,7 @@ public class QnaSearchRepositoryImpl extends QuerydslRepositorySupport
     }
 
     @Override
-    public Page<QnaBoard> getPagination(QnaBoardDto.SearchCreteria criteria,
+    public Page<QnaBoard> getPagination(BoardDto.SearchCreteria criteria,
                                         Pageable pageable) {
 
         final JPQLQuery<QnaBoard> query = queryFactory.selectFrom(qnaBoard)

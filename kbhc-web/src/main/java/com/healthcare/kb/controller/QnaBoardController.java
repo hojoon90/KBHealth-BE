@@ -70,7 +70,34 @@ public class QnaBoardController {
                 .body(qnaBoardFacade.selectQnaPostList(request));
     }
 
+    @PostMapping("/comment")
+    public ResponseEntity<AppResponse<Void>> registQnaPostComment(
+            @RequestPart @Valid final QnaBoardRequest.CommentRegist request,
+            @AuthenticationPrincipal AppUserDetails userDetails
+    ){
+        return ResponseEntity.status(HttpStatus.CREATED.value())
+                .body(qnaBoardFacade.registQnaPostComment(request, userDetails));
 
+    }
+
+    @PutMapping("/comment/{commentNo}")
+    public ResponseEntity<AppResponse<Void>> updateQnaPostComment(
+            @PathVariable Long commentNo,
+            @RequestPart @Valid final QnaBoardRequest.CommentRegist request,
+            @AuthenticationPrincipal AppUserDetails userDetails
+    ) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(qnaBoardFacade.updateQnaPostComment(commentNo, request, userDetails));
+    }
+
+    @DeleteMapping("/comment/{commentNo}")
+    public ResponseEntity<AppResponse<Void>> deleteQnaPostComment(
+            @PathVariable Long commentNo,
+            @AuthenticationPrincipal AppUserDetails userDetails
+    ){
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(qnaBoardFacade.deleteQnaPostComment(commentNo, userDetails));
+    }
 
 }
 

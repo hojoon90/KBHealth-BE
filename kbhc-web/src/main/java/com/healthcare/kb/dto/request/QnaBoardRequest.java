@@ -18,6 +18,13 @@ public class QnaBoardRequest {
 
     @Getter
     @Builder
+    public static class CommentRegist{
+        private Long postNo;
+        private String contents;
+    }
+
+    @Getter
+    @Builder
     @AllArgsConstructor
     public static class PageablePostSearchRequest {
 

@@ -16,3 +16,6 @@ springdoc:
     path: /kbhc/swagger.html
     tags-sorter: alpha
     operations-sorter: alpha
+
+post-file:
+  path: /Users/choehojun/Documents/images
