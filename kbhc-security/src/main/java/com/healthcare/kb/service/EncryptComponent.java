@@ -19,7 +19,6 @@ public class EncryptComponent {
 
     public String decryptData(String encryptData) {
         return new String(encryptor.decrypt(Base64.getDecoder().decode(encryptData)));
-
     }
 
 }

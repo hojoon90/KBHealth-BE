@@ -3,6 +3,7 @@ package com.healthcare.kb.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.healthcare.kb.dto.BoardDto;
 import com.healthcare.kb.dto.board.QnaBoardDto;
+import com.healthcare.kb.util.NameChangeUtil;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +24,6 @@ public class QnaBoardResponse {
         private Long viewCnt;
         private String createdBy;
         private List<CommentDetail> commentList;
-        private List<FileResponse.FileInfo> fileList;
 
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
         private LocalDateTime createdAt;
@@ -33,9 +33,6 @@ public class QnaBoardResponse {
         public static QnaDetail from(BoardDto.PostDetail dto){
             List<CommentDetail> commentList = dto.getCommentList()
                     .stream().map(CommentDetail::from).toList();
-
-            List<FileResponse.FileInfo> fileList = dto.getFileList()
-                    .stream().map(FileResponse.FileInfo::from).toList();
             
             return QnaDetail.builder()
                     .qnaNo(dto.getPostNo())
@@ -43,8 +40,7 @@ public class QnaBoardResponse {
                     .contents(dto.getContents())
                     .viewCnt(dto.getViewCnt())
                     .commentList(commentList)
-                    .fileList(fileList)
-                    .createdBy(dto.getCreatedBy())
+                    .createdBy(NameChangeUtil.convertUserName(dto.getCreatedBy()))
                     .createdAt(dto.getCreatedAt())
                     .build();
         }
@@ -65,6 +61,7 @@ public class QnaBoardResponse {
             return CommentDetail.builder()
                     .commentNo(dto.getCommentNo())
                     .contents(dto.getContents())
+                    //전문가의 경우 신뢰성을 위해 별도 닉네임 비공개 처리를 하지 않음. 만약 필요할 시 마스킹처리 메서드 적용필요.
                     .createdBy(dto.getCreatedBy())
                     .build();
         }
@@ -85,7 +82,7 @@ public class QnaBoardResponse {
                     .qnaNo(dto.getPostNo())
                     .title(dto.getTitle())
                     .viewCnt(dto.getViewCnt())
-                    .createdBy(dto.getCreatedBy())
+                    .createdBy(NameChangeUtil.convertUserName(dto.getCreatedBy()))
                     .createdAt(dto.getCreatedAt())
                     .build();
         }

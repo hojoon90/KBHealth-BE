@@ -33,6 +33,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static com.healthcare.kb.type.RoleType.ADMIN;
+import static com.healthcare.kb.type.RoleType.EXPERT;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -80,12 +83,23 @@ public class KbhcSecurityConfig {
                                 registry
                                         .requestMatchers(
                                                 AntPathRequestMatcher.antMatcher("/"),
-//                                                AntPathRequestMatcher.antMatcher("/kbhc/**"),
+                                                AntPathRequestMatcher.antMatcher("/kbhc/swagger/**"),
                                                 AntPathRequestMatcher.antMatcher("/h2-console/**"),
 
-                                                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/kbhc/user/**")
-
+                                                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/kbhc/user/signup"),
+                                                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/kbhc/user/login"),
+                                                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/kbhc/user/refresh-token")
                                         ).permitAll()
+                                        .requestMatchers(
+                                                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/kbhc/**/comment"),
+                                                AntPathRequestMatcher.antMatcher(HttpMethod.PUT, "/kbhc/**/comment/**"),
+                                                AntPathRequestMatcher.antMatcher(HttpMethod.DELETE, "/kbhc/**/comment/**")
+                                        )
+                                        .hasRole(EXPERT.name())
+                                        .requestMatchers(
+                                                AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/kbhc/user/change-role")
+                                        )
+                                        .hasRole(ADMIN.name())
                                         .anyRequest()
                                         .authenticated()
                 )

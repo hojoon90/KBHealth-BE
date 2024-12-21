@@ -13,6 +13,8 @@ import com.healthcare.kb.service.EncryptComponent;
 import com.healthcare.kb.service.KbhcSecurityService;
 import com.healthcare.kb.service.PasswordComponent;
 import com.healthcare.kb.service.UserService;
+import com.healthcare.kb.type.RoleActionType;
+import com.healthcare.kb.type.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -99,6 +101,21 @@ public class UserFacade {
 
         final JwtDto.Tokens tokens = kbhcSecurityService.getTokens(userInfo);
         return AppResponse.responseSuccess(UserResponse.TokenResponse.from(tokens));
+    }
+
+    public AppResponse<Void> changeUserRole(UserRequest.UserRole request){
+
+        RoleType roleType = RoleType.valueOf(request.getChangeRole());
+        RoleActionType roleActionType = RoleActionType.valueOf(request.getRoleAction());
+
+        UserDto.UserRole dto = UserDto.UserRole.builder()
+                .email(request.getEmail())
+                .changeRole(roleType)
+                .roleAction(roleActionType)
+                .build();
+
+        userService.updateUserRole(dto);
+        return AppResponse.responseVoidSuccess(HttpStatus.OK.value());
     }
 
 }

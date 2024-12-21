@@ -2,6 +2,7 @@ package com.healthcare.kb.dto;
 
 import com.healthcare.kb.domain.Role;
 import com.healthcare.kb.domain.User;
+import com.healthcare.kb.type.RoleActionType;
 import com.healthcare.kb.type.RoleType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserDto {
@@ -27,7 +29,7 @@ public class UserDto {
                     .password(password)
                     .name(name)
                     .nickName(nickName)
-                    .roles(List.of(role))
+                    .roles(Set.of(role))
                     .build();
         }
     }
@@ -57,5 +59,13 @@ public class UserDto {
                     .roles(roles)
                     .build();
         }
+    }
+
+    @Getter
+    @Builder
+    public static class UserRole{
+        private String email;
+        private RoleType changeRole;
+        private RoleActionType roleAction;
     }
 }

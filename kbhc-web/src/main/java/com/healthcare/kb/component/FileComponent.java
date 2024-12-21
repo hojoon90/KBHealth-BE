@@ -1,48 +1,39 @@
 package com.healthcare.kb.component;
 
 import com.healthcare.kb.dto.FileDto;
-import com.healthcare.kb.service.FileService;
+import com.healthcare.kb.exception.NotFoundException;
 import com.healthcare.kb.type.BoardType;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import static com.healthcare.kb.constant.AppConst.*;
+import static com.healthcare.kb.constant.MessageConst.FILE_NOT_FOUND;
 
+@Slf4j
 @Component
-@RequiredArgsConstructor
 public class FileComponent {
-
-    private final FileService fileService;
 
     @Value("${post-file.path}")
     private String uploadPath;
 
-    @Transactional
-    public void registerFile(List<MultipartFile> fileList, Long postId, BoardType boardType) {
-        final List<FileDto.Register> dtoList = fileList.stream()
-                .filter(Objects::nonNull)
-                .map(i -> uploadFile(i, postId, boardType))
-                .toList();
-
-        fileService.saveFile(dtoList);
-    }
-
     /**
      * 단일 파일 업로드
-     * @param file - 파일 객체
-     * @return DB에 저장할 파일 정보
+     * @param file
+     * @return
      */
     public FileDto.Register uploadFile(final MultipartFile file, Long postNo, BoardType boardType) {
 
@@ -54,7 +45,7 @@ public class FileComponent {
         FileDto.Register fileDto = FileDto.Register.builder()
                 .postNo(postNo)
                 .boardType(boardType)
-                .saveName(generateSaveFilename(file.getOriginalFilename()))
+                .saveName(saveName)
                 .originName(file.getOriginalFilename())
                 .fileSize(file.getSize())
                 .build();
@@ -71,10 +62,10 @@ public class FileComponent {
 
     /**
      * 저장 파일명 생성
-     * @param filename 원본 파일명
-     * @return 디스크에 저장할 파일명
+     * @param filename
+     * @return
      */
-    private String generateSaveFilename(final String filename) {
+    public String generateSaveFilename(final String filename) {
         String uuid = UUID.randomUUID().toString().replaceAll(DASH, "");
         String extension = StringUtils.getFilenameExtension(filename);
         return uuid + DOT + extension;
@@ -82,19 +73,19 @@ public class FileComponent {
 
     /**
      * 업로드 경로 반환
-     * @param addPath - 추가 경로
-     * @return 업로드 경로
+     * @param addPath
+     * @return
      */
-    private String getUploadPath(final String addPath) {
+    public String getUploadPath(final String addPath) {
         return makeDirectories(uploadPath + File.separator + addPath);
     }
 
     /**
      * 업로드 폴더(디렉터리) 생성
-     * @param path - 업로드 경로
-     * @return 업로드 경로
+     * @param path
+     * @return
      */
-    private String makeDirectories(final String path) {
+    public String makeDirectories(final String path) {
         File dir = new File(path);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -102,7 +93,49 @@ public class FileComponent {
         return dir.getPath();
     }
 
+    /**
+     * 파일 삭제
+     * @param addPath
+     * @param filename
+     */
+    public void deleteFile(final String addPath, final String filename) {
+        String filePath = Paths.get(uploadPath, addPath, filename).toString();
+        deleteFile(filePath);
+    }
 
+    /**
+     * 파일 삭제
+     * @param filePath
+     */
+    private void deleteFile(final String filePath) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
 
+    /**
+     * 다운로드
+     * @param file - 첨부파일 상세정보
+     * @return
+     */
+    public Resource readFileAsResource(final FileDto.FileInfo file) {
+        String uploadedDate = file.getCreatedAt().toLocalDate().format(DateTimeFormatter.ofPattern(YYYY_MM_DD));
+        String filename = file.getFileName();
+        Path filePath = Paths.get(uploadPath, uploadedDate, filename);
+
+        try {
+            Resource resource = new UrlResource(filePath.toUri());
+            if (!resource.exists() || !resource.isFile()) {
+                log.error("File not found Exception. resource.exist(): {}, resource.isFile(): {}",
+                        resource.exists(), resource.isFile());
+                throw new NotFoundException(FILE_NOT_FOUND);
+            }
+            return resource;
+        } catch (MalformedURLException e) {
+            log.error("File not found : {}", filePath);
+            throw new NotFoundException(FILE_NOT_FOUND);
+        }
+    }
 }
 

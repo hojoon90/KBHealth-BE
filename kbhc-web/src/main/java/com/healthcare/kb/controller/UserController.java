@@ -1,6 +1,7 @@
 package com.healthcare.kb.controller;
 
 import com.healthcare.kb.dto.AppResponse;
+import com.healthcare.kb.dto.AppUserDetails;
 import com.healthcare.kb.dto.request.UserRequest;
 import com.healthcare.kb.dto.response.UserResponse;
 import com.healthcare.kb.facade.UserFacade;
@@ -8,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +45,14 @@ public class UserController {
     ) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userFacade.getRefreshToken(request));
+    }
+
+    @PostMapping("/change-role")
+    public ResponseEntity<AppResponse<Void>> changeUserRole(
+            @RequestBody @Valid final UserRequest.UserRole request
+    ){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userFacade.changeUserRole(request));
     }
 
 }

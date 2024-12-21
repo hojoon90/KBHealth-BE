@@ -39,8 +39,7 @@ public class QnaBoardDto {
         //https://community.sonarsource.com/t/potential-false-positive-for-s3252-with-lombok-superbuilder/38082/3
         //Builder 사용 관련 경고 제거
         @SuppressWarnings("java:S3252")
-        public static QnaBoardDto.QnaPostDetail fromEntityToDetail (QnaBoard entity,
-                                                                    List<FileDto.FileInfo> allFileList){
+        public static QnaBoardDto.QnaPostDetail fromEntityToDetail (QnaBoard entity){
 
             List<QnaCommentDetail> commentList = entity.getCommentList()
                     .stream()
@@ -53,7 +52,6 @@ public class QnaBoardDto {
                     .contents(entity.getContents())
                     .viewCnt(entity.getViewCnt())
                     .commentList(convertToCommentInfoList(commentList))
-                    .fileList(allFileList)
                     .createdAt(entity.getCreatedAt())
                     .createdBy(entity.getCreatedBy().getNickName())
                     .build();

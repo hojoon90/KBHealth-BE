@@ -1,10 +1,9 @@
 package com.healthcare.kb.service.board;
 
-import com.healthcare.kb.domain.board.QnaBoard;
 import com.healthcare.kb.domain.User;
+import com.healthcare.kb.domain.board.QnaBoard;
 import com.healthcare.kb.domain.board.QnaComment;
 import com.healthcare.kb.dto.BoardDto;
-import com.healthcare.kb.dto.FileDto;
 import com.healthcare.kb.dto.board.QnaBoardDto;
 import com.healthcare.kb.exception.ForbiddenException;
 import com.healthcare.kb.exception.NotFoundException;
@@ -12,7 +11,6 @@ import com.healthcare.kb.repository.UserRepository;
 import com.healthcare.kb.repository.board.qna.QnaBoardRepository;
 import com.healthcare.kb.repository.board.qna.QnaCommentRepository;
 import com.healthcare.kb.service.BoardService;
-import com.healthcare.kb.service.FileService;
 import com.healthcare.kb.type.BoardType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,7 +32,6 @@ public class QnaBoardService implements BoardService<QnaBoardDto.QnaPostDetail> 
     private final QnaBoardRepository qnaBoardRepository;
     private final QnaCommentRepository qnaCommentRepository;
     private final UserRepository userRepository;
-    private final FileService fileService;
 
     /**
      * 서비스 구현체 확인용 메서드
@@ -121,9 +118,8 @@ public class QnaBoardService implements BoardService<QnaBoardDto.QnaPostDetail> 
         QnaBoard qnaBoard = qnaBoardRepository.findById(qnaNo)
                 .orElseThrow(() -> new NotFoundException(DATA_NOT_FOUND));
 
-        List<FileDto.FileInfo> allFileList = Optional.of(fileService.findAllFileList(qnaNo, BoardType.QNA))
-                .orElse(Collections.emptyList());
-        return QnaBoardDto.QnaPostDetail.fromEntityToDetail(qnaBoard, allFileList);
+        qnaBoard.updateViewCnt();
+        return QnaBoardDto.QnaPostDetail.fromEntityToDetail(qnaBoard);
     }
 
     /**

@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FileDto {
 
@@ -37,6 +39,9 @@ public class FileDto {
         private Long postNo;
         private BoardType boardType;
         private String fileName;
+        private String originName;
+        private Long fileSize;
+        private LocalDateTime createdAt;
 
         public static FileInfo from(File entity) {
             return FileInfo.builder()
@@ -44,8 +49,12 @@ public class FileDto {
                     .postNo(entity.getPostNo())
                     .boardType(entity.getBoardType())
                     .fileName(entity.getSaveName())
+                    .originName(entity.getOriginName())
+                    .fileSize(entity.getFileSize())
+                    .createdAt(entity.getCreatedAt())
                     .build();
         }
+
     }
 
 }

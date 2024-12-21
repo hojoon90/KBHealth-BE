@@ -24,7 +24,7 @@ public class QnaComment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "qna_no")
     private QnaBoard qnaBoard;
 

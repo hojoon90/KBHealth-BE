@@ -48,6 +48,10 @@ public class QnaBoard extends BaseEntity {
         this.contents = dto.getContents();
     }
 
+    public void updateViewCnt(){
+        this.viewCnt++;
+    }
+
     @Builder
     public QnaBoard(String title, String contents, Long viewCnt, User createdBy) {
         this.title = title;

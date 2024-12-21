@@ -3,6 +3,7 @@ package com.healthcare.kb.type;
 import com.healthcare.kb.exception.DataProcessException;
 import jakarta.persistence.AttributeConverter;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -10,8 +11,13 @@ import java.util.Objects;
 import static com.healthcare.kb.constant.MessageConst.*;
 
 @Getter
+@RequiredArgsConstructor
 public enum RoleType {
-    ROLE_EXPERT, ROLE_MEMBER;
+    ADMIN("ROLE_ADMIN"),
+    EXPERT("ROLE_EXPERT"),
+    MEMBER("ROLE_MEMBER");
+
+    private final String role;
 
     public static class Converter implements AttributeConverter<RoleType, String> {
 

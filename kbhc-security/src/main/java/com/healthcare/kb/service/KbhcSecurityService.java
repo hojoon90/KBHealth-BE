@@ -1,5 +1,6 @@
 package com.healthcare.kb.service;
 
+import com.healthcare.kb.constant.AppConst;
 import com.healthcare.kb.dto.JwtDto;
 import com.healthcare.kb.dto.LoginUser;
 import com.healthcare.kb.exception.AuthorizeException;
@@ -63,7 +64,7 @@ public class KbhcSecurityService {
         claims.put("userId", userInfo.getEmail());
         claims.put("name", userInfo.getName());
 
-        String roleStr = String.join(",", userInfo.getRole().stream().map(RoleType::name).toList());
+        String roleStr = String.join(AppConst.COMMA, userInfo.getRole().stream().map(RoleType::getRole).toList());
         claims.put("role", roleStr);
 
         return Jwts.builder()

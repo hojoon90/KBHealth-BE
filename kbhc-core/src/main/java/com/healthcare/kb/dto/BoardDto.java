@@ -31,7 +31,6 @@ public class BoardDto {
         private Long viewCnt;
         private String createdBy;
         private List<CommentDetail> commentList;
-        private List<FileDto.FileInfo> fileList;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 

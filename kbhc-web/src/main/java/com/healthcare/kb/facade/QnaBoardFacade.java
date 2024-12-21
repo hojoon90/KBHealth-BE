@@ -23,7 +23,7 @@ import java.util.List;
 public class QnaBoardFacade {
 
     private final QnaBoardService qnaBoardService;
-    private final FileComponent fileComponent;
+    private final FileFacade fileFacade;
 
     /**
      * 게시글 등록
@@ -47,7 +47,7 @@ public class QnaBoardFacade {
         //파일 저장 처리
         Long postNo = qnaBoardService.savePostData(dto);
         if(!CollectionUtils.isEmpty(fileList)){
-            fileComponent.registerFile(fileList, postNo, BoardType.QNA);
+            fileFacade.registerFile(fileList, BoardType.QNA, postNo);
         }
 
         return AppResponse.responseVoidSuccess(HttpStatus.CREATED.value());
@@ -69,8 +69,8 @@ public class QnaBoardFacade {
                 .createdBy(userNo)
                 .build();
 
-
         qnaBoardService.updatePostData(qnaNo, dto);
+
         return AppResponse.responseVoidSuccess(HttpStatus.OK.value());
 
     }

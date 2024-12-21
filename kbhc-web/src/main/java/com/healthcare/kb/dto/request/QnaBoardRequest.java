@@ -2,6 +2,7 @@ package com.healthcare.kb.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.domain.PageRequest;
@@ -12,14 +13,20 @@ public class QnaBoardRequest {
     @Getter
     @Builder
     public static class Regist{
+
+        @NotBlank
         private String title;
+        @NotBlank
         private String contents;
     }
 
     @Getter
     @Builder
     public static class CommentRegist{
+
+        @NotNull
         private Long postNo;
+        @NotBlank
         private String contents;
     }
 

@@ -22,7 +22,7 @@ public class QnaBoardController {
 
     private final QnaBoardFacade qnaBoardFacade;
 
-    @PostMapping
+    @PostMapping("/post")
     public ResponseEntity<AppResponse<Void>> registQnaPost(
             @RequestPart @Valid final QnaBoardRequest.Regist request,
             @AuthenticationPrincipal AppUserDetails userDetails,
@@ -33,7 +33,7 @@ public class QnaBoardController {
 
     }
 
-    @PutMapping("/{qnaNo}")
+    @PutMapping("/post/{qnaNo}")
     public ResponseEntity<AppResponse<Void>> updateQnaPost(
             @PathVariable Long qnaNo,
             @RequestPart @Valid final QnaBoardRequest.Regist request,
@@ -43,7 +43,7 @@ public class QnaBoardController {
                 .body(qnaBoardFacade.updateQnaPost(qnaNo, request, userDetails));
     }
 
-    @DeleteMapping("/{qnaNo}")
+    @DeleteMapping("/post/{qnaNo}")
     public ResponseEntity<AppResponse<Void>> deleteQnaPost(
             @PathVariable Long qnaNo,
             @AuthenticationPrincipal AppUserDetails userDetails
@@ -52,7 +52,7 @@ public class QnaBoardController {
                 .body(qnaBoardFacade.deleteQnaPost(qnaNo, userDetails));
     }
 
-    @GetMapping("/{qnaNo}")
+    @GetMapping("/post/{qnaNo}")
     public ResponseEntity<AppResponse<QnaBoardResponse.QnaDetail>> selectQnaPost(
             @PathVariable Long qnaNo,
             @AuthenticationPrincipal AppUserDetails userDetails
@@ -61,7 +61,7 @@ public class QnaBoardController {
                 .body(qnaBoardFacade.selectQnaPost(qnaNo));
     }
 
-    @GetMapping("/list")
+    @GetMapping("/post/list")
     public ResponseEntity<AppResponse<QnaBoardResponse.QnaBoardPages>> selectQnaPostList(
             @Valid final QnaBoardRequest.PageablePostSearchRequest request,
             @AuthenticationPrincipal AppUserDetails userDetails

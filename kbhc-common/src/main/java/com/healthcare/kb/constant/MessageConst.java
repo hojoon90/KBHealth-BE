@@ -24,6 +24,7 @@ public enum MessageConst {
     //404
     USER_NOT_FOUND(404,"사용자를 찾을 수 없습니다."),
     DATA_NOT_FOUND(404,"데이터를 찾을 수 없습니다."),
+    FILE_NOT_FOUND(404,"파일을 찾을 수 없습니다."),
 
     //409
     USER_DATA_CONFLICT(409,"이미 존재하는 사용자 입니다."),
